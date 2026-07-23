@@ -1,0 +1,10 @@
+[project]
+name = "smap-warehouse"
+version = "0.1.0"
+description = "Enterprise Data Warehouse & dbt project for Smart Manufacturing Analytics"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "dbt-core>=1.7.0",
+    "dbt-postgres>=1.7.0"
+]

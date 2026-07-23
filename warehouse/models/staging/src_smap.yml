@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: smap_silver
+    description: "The cleansed and conformed Silver layer from the SMAP ETL pipeline."
+    schema: silver
+    tables:
+      # Reference Tables
+      - name: production_lines
+      - name: shifts
+      - name: machines
+      - name: products
+      - name: employees
+      - name: defect_types
+      - name: pm_schedules
+      
+      # Transaction Tables
+      - name: production_orders
+      - name: downtime_events
+      - name: quality_inspections
+      - name: maintenance_logs
+      - name: material_movements
+      
+      # Telemetry
+      - name: sensor_readings

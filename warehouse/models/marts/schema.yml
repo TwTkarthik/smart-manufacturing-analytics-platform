@@ -1,0 +1,110 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: "Date dimension"
+    columns:
+      - name: date_key
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_machine
+    description: "Machine dimension"
+    columns:
+      - name: machine_key
+        tests:
+          - unique
+          - not_null
+      - name: machine_id
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_product
+    description: "Product dimension with SCD Type 2 tracking"
+    columns:
+      - name: product_key
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_employee
+    description: "Employee dimension with SCD Type 2 tracking"
+    columns:
+      - name: employee_key
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_production
+    description: "Production orders fact table"
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: date_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: machine_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_machine')
+              field: machine_key
+      - name: product_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_product')
+              field: product_key
+      - name: yield_pct
+        tests:
+          - not_null
+        # In base dbt without packages we can use a custom generic test or accepted values, 
+        # but skipping for brevity if we don't have dbt_utils installed. I'll just use a standard check for now.
+
+  - name: fact_quality
+    description: "Quality inspections fact table"
+    columns:
+      - name: inspection_id
+        tests:
+          - unique
+          - not_null
+      - name: date_key
+        tests:
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+
+  - name: fact_maintenance
+    description: "Maintenance logs fact table"
+    columns:
+      - name: log_id
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_inventory
+    description: "Material movements fact table"
+    columns:
+      - name: movement_id
+        tests:
+          - unique
+          - not_null
+      - name: movement_type
+        tests:
+          - accepted_values:
+              values: ["RECEIPT", "ISSUE", "TRANSFER", "ADJUSTMENT"]
+
+  - name: fact_sensor_readings
+    description: "Telemetry fact table"
+    columns:
+      - name: reading_id
+        tests:
+          - unique
+          - not_null
