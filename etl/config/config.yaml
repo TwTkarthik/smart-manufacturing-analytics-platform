@@ -1,0 +1,50 @@
+database:
+  source:
+    dsn: "postgresql://postgres:postgres@localhost:5432/smap_dev"
+    schema: "public"
+  destination:
+    dsn: "postgresql://postgres:postgres@localhost:5433/smap_dw"
+    # Fallback to source DB if DW is not available during dev
+    fallback_dsn: "postgresql://postgres:postgres@localhost:5432/smap_dev"
+
+schemas:
+  bronze: "bronze"
+  silver: "silver"
+  gold: "gold"
+
+extraction:
+  mode: "incremental" # full or incremental
+  high_water_mark_column: "updated_at"
+  tables:
+    - name: "production_lines"
+      type: "reference"
+    - name: "shifts"
+      type: "reference"
+    - name: "machines"
+      type: "reference"
+    - name: "products"
+      type: "reference"
+    - name: "employees"
+      type: "reference"
+    - name: "defect_types"
+      type: "reference"
+    - name: "spare_parts"
+      type: "reference"
+    - name: "pm_schedules"
+      type: "reference"
+    - name: "production_orders"
+      type: "transaction"
+    - name: "downtime_events"
+      type: "transaction"
+    - name: "quality_inspections"
+      type: "transaction"
+    - name: "maintenance_logs"
+      type: "transaction"
+    - name: "material_movements"
+      type: "transaction"
+    - name: "sensor_readings"
+      type: "telemetry"
+      high_water_mark_column: "reading_timestamp"
+
+quality:
+  strict_mode: false # If true, fail pipeline on quality check failure; else warn

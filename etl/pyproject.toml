@@ -1,0 +1,31 @@
+[project]
+name = "smap-etl"
+version = "0.1.0"
+description = "Enterprise ETL Platform for Smart Manufacturing Analytics"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=2.2.0",
+    "SQLAlchemy>=2.0.0",
+    "psycopg[binary]>=3.1.0",
+    "PyYAML>=6.0.1",
+    "pydantic>=2.0.0",
+    "loguru>=0.7.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.4.0",
+    "mypy>=1.9.0"
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
