@@ -1,0 +1,49 @@
+global:
+  seed: 42
+  start_date: "2026-01-01T00:00:00Z"
+  end_date: "2026-07-23T00:00:00Z"
+  db_dsn: "postgresql://postgres:postgres@localhost:5432/smap_dev"
+
+generation_params:
+  production_lines:
+    generate: false # Typically seeded, set to false to use existing reference data
+  shifts:
+    generate: false
+  defect_types:
+    generate: false
+  products:
+    generate: false
+  spare_parts:
+    generate: false
+  employees:
+    generate: true
+    row_count: 50
+  machines:
+    generate: true
+    row_count: 48
+  pm_schedules:
+    generate: true
+    count_per_machine: 3
+  production_orders:
+    generate: true
+    row_count: 5000
+    anomaly_rate: 0.05
+    missing_value_rate: 0.01
+  downtime_events:
+    generate: true
+    row_count: 2000
+    missing_value_rate: 0.05 # Missing reason codes
+  quality_inspections:
+    generate: true
+    row_count: 6000
+    defect_rate: 0.15 # Overall defect rate to simulate
+  maintenance_logs:
+    generate: true
+    row_count: 1000
+  material_movements:
+    generate: true
+    row_count: 3000
+  sensor_readings:
+    generate: true
+    readings_per_machine_per_day: 144 # Every 10 mins
+    anomaly_rate: 0.02

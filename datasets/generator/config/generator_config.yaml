@@ -1,0 +1,164 @@
+# =============================================================================
+# generator_config.yaml
+# SMAP Synthetic Dataset Generator — Configuration
+#
+# All row counts, rates, and parameters are overridable via CLI flags.
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# Global settings
+# ---------------------------------------------------------------------------
+global:
+  random_seed: 42                    # Deterministic seed for reproducibility
+  output_dir: "output"               # Relative to generator/ directory
+  output_format: "csv"               # Options: csv | parquet
+  log_level: "INFO"                  # DEBUG | INFO | WARNING
+
+# ---------------------------------------------------------------------------
+# Temporal scope
+# Synthetic data covers this date range.
+# Timestamps are generated within shift windows in this range.
+# ---------------------------------------------------------------------------
+temporal:
+  start_date: "2026-01-01"
+  end_date: "2026-07-22"
+  timezone: "UTC"
+
+# ---------------------------------------------------------------------------
+# Entity row counts
+# Reference entities are sized to match PLT-DET documented specs.
+# Transactional entities can be scaled up/down for testing.
+# ---------------------------------------------------------------------------
+entities:
+
+  # Reference / master data (fixed sizes — match business documentation)
+  production_lines:
+    count: 11                        # LINE-A through LINE-K
+
+  shifts:
+    count: 10                        # SHIFT-A through SHIFT-J (per facility)
+
+  machines:
+    count: 48                        # PLT-DET: 48 machines per COMPANY_PROFILE.md
+
+  employees:
+    count: 200                       # Scaled subset of PLT-DET headcount (980 total)
+
+  products:
+    count: 8                         # PRD-001 through PRD-008
+
+  defect_types:
+    count: 15                        # Full defect type catalog (matches seed.sql)
+
+  spare_parts:
+    count: 20                        # Representative catalog subset (matches seed.sql)
+
+  # Transactional entities
+  production_orders:
+    count: 5000                      # ~5K orders over the temporal scope
+
+  downtime_events:
+    count: 2500                      # ~0.5 downtime events per order on average
+
+  sensor_readings:
+    count: 100000                    # 100K readings (reduced for dev; full ~200M for prod)
+
+  quality_inspections:
+    count: 8000                      # ~1.6 inspections per production order average
+
+  pm_schedules:
+    count: 144                       # ~3 PM types per machine × 48 machines
+
+  maintenance_logs:
+    count: 400                       # ~8 work orders per machine over scope period
+
+  material_movements:
+    count: 1200                      # ~3 movements per maintenance work order average
+
+# ---------------------------------------------------------------------------
+# Data quality simulation
+# Controls injection of missing values, duplicates, and anomalies.
+# ---------------------------------------------------------------------------
+data_quality:
+
+  # Missing value rates (fraction of rows where the field is NULL)
+  missing_rates:
+    employees.skill_level: 0.05      # 5% of employees have no skill level recorded
+    employees.hire_date: 0.08        # 8% of HRIS records lack hire date
+    downtime_events.reason_code: 0.12  # 12% of stops have no reason code
+    downtime_events.downtime_minutes: 0.03  # 3% of events still open at extraction
+    maintenance_logs.failure_code: 0.15  # 15% of corrective WOs lack failure code
+    maintenance_logs.root_cause: 0.70  # 70% of WOs have no root cause notes
+    maintenance_logs.repair_cost: 0.25   # 25% of WOs lack cost data
+    quality_inspections.defect_type_code: 0.08  # 8% of defective records missing code
+    quality_inspections.measurement_value: 0.30  # 30% of records lack measurement
+    sensor_readings.data_quality_score: 0.15  # 15% of sensors pre-2021 have no score
+
+  # Duplicate injection (fraction of rows that are near-duplicates)
+  duplicate_rates:
+    sensor_readings: 0.001           # 0.1% duplicate sensor readings (SCADA retry)
+    quality_inspections: 0.002       # 0.2% duplicate inspection records (QMS bug)
+
+  # Anomaly injection (fraction of sensor readings that are out-of-range)
+  anomaly_rates:
+    sensor_readings.temperature: 0.025   # 2.5% of temperature readings anomalous
+    sensor_readings.vibration: 0.030     # 3.0% of vibration readings anomalous
+    sensor_readings.rpm: 0.015           # 1.5% of RPM readings anomalous
+    sensor_readings.pressure: 0.020      # 2.0% of pressure readings anomalous
+    sensor_readings.power: 0.010         # 1.0% of power readings anomalous
+    sensor_readings.cutting_force: 0.035 # 3.5% of cutting force readings anomalous
+    sensor_readings.coolant_flow: 0.018  # 1.8% of coolant flow readings anomalous
+
+# ---------------------------------------------------------------------------
+# Sensor operating ranges (used for anomaly injection and is_within_spec)
+# Values per MANUFACTURING_PROCESS.md §5.2
+# ---------------------------------------------------------------------------
+sensor_ranges:
+  temperature:
+    normal_min: 20.0
+    normal_max: 65.0
+    anomaly_low: 5.0
+    anomaly_high: 95.0
+    unit: "C"
+
+  vibration:
+    normal_min: 0.5
+    normal_max: 4.5
+    anomaly_low: 0.0
+    anomaly_high: 12.0
+    unit: "mm/s"
+
+  rpm:
+    normal_min: 200.0
+    normal_max: 8000.0
+    anomaly_low: 0.0
+    anomaly_high: 9500.0
+    unit: "RPM"
+
+  pressure:
+    normal_min: 1500.0
+    normal_max: 3000.0
+    anomaly_low: 500.0
+    anomaly_high: 3800.0
+    unit: "PSI"
+
+  power:
+    normal_min: 2.0
+    normal_max: 85.0
+    anomaly_low: 0.0
+    anomaly_high: 120.0
+    unit: "kWh"
+
+  cutting_force:
+    normal_min: 200.0
+    normal_max: 2500.0
+    anomaly_low: 0.0
+    anomaly_high: 3500.0
+    unit: "N"
+
+  coolant_flow:
+    normal_min: 8.0
+    normal_max: 40.0
+    anomaly_low: 0.0
+    anomaly_high: 60.0
+    unit: "L/min"

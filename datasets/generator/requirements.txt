@@ -1,0 +1,25 @@
+# SMAP Synthetic Dataset Generator — Dependencies
+# Python >= 3.11
+
+# Core data generation
+faker==26.1.0                # Realistic fake data (names, codes — not used for PII)
+numpy==2.0.1                 # Numerical distributions and random sampling
+
+# Data output
+pandas==2.2.2                # CSV serialization
+pyarrow==17.0.0              # Parquet output (optional)
+
+# Configuration
+pyyaml==6.0.2                # YAML config file parsing
+pydantic==2.8.2              # Settings validation via pydantic BaseSettings
+
+# CLI
+click==8.1.7                 # Command-line interface
+
+# Utilities
+python-dateutil==2.9.0       # Date arithmetic for shift-aware timestamps
+tqdm==4.66.5                 # Progress bars for long-running generation
+rich==13.7.1                 # Pretty console output and tables
+
+# Type checking (dev only)
+mypy==1.11.1

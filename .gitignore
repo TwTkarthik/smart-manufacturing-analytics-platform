@@ -1,0 +1,165 @@
+# ============================================================
+# Smart Manufacturing Analytics Platform (SMAP)
+# .gitignore
+# ============================================================
+
+# ─── Python ────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+.eggs/
+*.pth
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+.env.local
+
+# ─── Environment / Secrets ─────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+secrets/
+
+# ─── Testing & Coverage ────────────────────────────────────
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+*.cover
+
+# ─── Type Checking ─────────────────────────────────────────
+.mypy_cache/
+.pytype/
+.dmypy.json
+dmypy.json
+
+# ─── Jupyter Notebooks ─────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ─── dbt ───────────────────────────────────────────────────
+warehouse/dbt/target/
+warehouse/dbt/dbt_packages/
+warehouse/dbt/logs/
+warehouse/dbt/.user.yml
+profiles.yml
+
+# ─── MLflow ────────────────────────────────────────────────
+mlruns/
+mlartifacts/
+
+# ─── Node / Frontend ───────────────────────────────────────
+frontend/node_modules/
+frontend/.next/
+frontend/dist/
+frontend/build/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ─── Docker ────────────────────────────────────────────────
+.docker/
+
+# ─── IDE / Editor ──────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# ─── OS Files ──────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ─── Logs ──────────────────────────────────────────────────
+logs/
+*.log
+airflow/logs/
+*.log.*
+
+# ─── Data Files ────────────────────────────────────────────
+# Raw and processed data should NOT be committed for large files
+datasets/raw/*.csv
+datasets/raw/*.parquet
+datasets/processed/*.csv
+datasets/processed/*.parquet
+datasets/external/*.csv
+datasets/external/*.parquet
+
+# Keep sample files (small, for testing)
+!datasets/raw/sample_*.csv
+!datasets/raw/sample_*.parquet
+
+# ─── Model Artifacts ───────────────────────────────────────
+ml/models/*.pkl
+ml/models/*.joblib
+ml/models/*.onnx
+ml/models/*.h5
+ml/experiments/
+
+# ─── Airflow ───────────────────────────────────────────────
+airflow.cfg
+airflow.db
+airflow/webserver_config.py
+airflow/unittests.cfg
+airflow/logs/
+
+# ─── Alembic ───────────────────────────────────────────────
+# (Migrations ARE committed — they are version-controlled schema changes)
+# Exclude only auto-generated temp files
+*.pyc
+
+# ─── Terraform (if used in future) ─────────────────────────
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# ─── Temporary / Build ─────────────────────────────────────
+tmp/
+temp/
+.tmp/
+*.tmp
+*.bak
+*.orig
+*.rej
+
+# ─── Reports ───────────────────────────────────────────────
+reports/*.html
+reports/*.pdf

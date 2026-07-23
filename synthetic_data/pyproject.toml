@@ -1,0 +1,31 @@
+[project]
+name = "smap-synthetic-data"
+version = "0.1.0"
+description = "Synthetic Data Generator for the Smart Manufacturing Analytics Platform"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "Faker>=25.0.0",
+    "pandas>=2.2.0",
+    "numpy>=1.26.0",
+    "PyYAML>=6.0.1",
+    "SQLAlchemy>=2.0.0",
+    "psycopg[binary]>=3.1.0",
+    "tqdm>=4.66.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.4.0",
+    "mypy>=1.9.0"
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true

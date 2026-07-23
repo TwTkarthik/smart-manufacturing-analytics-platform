@@ -1,0 +1,1 @@
+"""SMAP Generator config package."""
